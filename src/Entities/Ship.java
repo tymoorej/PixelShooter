@@ -1,79 +1,53 @@
 package Entities;
 
-import BoardHelpers.Board;
-import BoardHelpers.Location;
 import ImageHelpers.ImageHelper;
+import Motion.Angle;
+import Motion.Position;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public class Ship {
-    private Location location;
+    private Position position;
     private BufferedImage image;
-    private int angle;
-    private int width;
-    private int height;
+    private Angle angle;
+    private static final int width = 100;
+    private static final int height = 100;
 
-    public Ship(Location location) {
-        this.location = location;
-        location.setHasPlayer(true);
-        this.angle = 0;
-        this.image = ImageHelper.loadImage(angle);
-        this.width = 100;
-        this.height = 100;
 
+    public Ship(Position position) {
+        this.position = position;
+        this.angle = new Angle(0);
+        this.image = ImageHelper.loadImage(angle.getAngle());
     }
 
-    public Location getLocation() {
-        return location;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public void moveUp() {
-        location.setHasPlayer(false);
-        location = Board.getInstance().getLocation(location.getX(), location.getY() - 1);
-        location.setHasPlayer(true);
-    }
-
-    public void moveDown() {
-        location.setHasPlayer(false);
-        location = Board.getInstance().getLocation(location.getX(), location.getY() + 1);
-        location.setHasPlayer(true);
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public void rotateLeft() {
-        angle = angle - 10;
-        if (angle < 0){
-            angle = 350;
-        }
-        image = ImageHelper.loadImage(angle);
+        angle.rotateLeft();
+        image = ImageHelper.loadImage(angle.getAngle());
     }
 
     public void rotateRight() {
-        angle = angle + 10;
-        if (angle > 360){
-            angle = 10;
-        }
-        image = ImageHelper.loadImage(angle);
+        angle.rotateRight();
+        image = ImageHelper.loadImage(angle.getAngle());
     }
 
     public BufferedImage getImage() {
         return image;
     }
 
-    public int getAngle() {
+    public Angle getAngle() {
         return angle;
     }
 
-    public void setAngle(int angle) {
+    public void setAngle(Angle angle) {
         this.angle = angle;
-
     }
 
     public int getWidth() {
@@ -82,5 +56,17 @@ public class Ship {
 
     public int getHeight() {
         return height;
+    }
+
+    public void increaseAcceleration() {
+        position.getVelocity().getAcceleration().increaseYAcceleration();
+    }
+
+    public void decreaseAcceleration() {
+        position.getVelocity().getAcceleration().decreaseYAcceleration();
+    }
+
+    public void updatePosition(){
+        position.updatePosition(width, height);
     }
 }

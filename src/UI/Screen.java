@@ -9,12 +9,15 @@ public class Screen {
     private int width;
     private int height;
 
-    private Screen() {
-        int preFixedWidth = Toolkit.getDefaultToolkit().getScreenSize().width - 100;
-        int preFixedHeight = Toolkit.getDefaultToolkit().getScreenSize().height - 100;
+    private int middleX;
+    private int middleY;
 
-        width = preFixedWidth - (preFixedWidth % Board.getInstance().getxSize());
-        height = preFixedHeight - (preFixedHeight % Board.getInstance().getySize());
+
+    private Screen() {
+        width = Toolkit.getDefaultToolkit().getScreenSize().width - 100;
+        height = Toolkit.getDefaultToolkit().getScreenSize().height - 100;
+        middleX = width/2;
+        middleY = height/2;
     }
 
     public static Screen getInstance(){
@@ -28,15 +31,15 @@ public class Screen {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public int getMiddleX() {
+        return middleX;
+    }
+
+    public int getMiddleY() {
+        return middleY;
     }
 }

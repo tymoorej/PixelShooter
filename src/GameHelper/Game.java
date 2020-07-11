@@ -1,14 +1,13 @@
 package GameHelper;
 
-import BoardHelpers.Board;
 import Entities.Player;
 import Entities.Ship;
+import Motion.Position;
+import UI.Screen;
 import UI.UIHandler;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.concurrent.Semaphore;
 
 import static java.lang.Thread.sleep;
@@ -30,7 +29,7 @@ public class Game {
 
     private Game() {
         gameState = GameState.NOT_STARTED;
-        player = new Player(new Ship(Board.getInstance().getLocation(Board.getInstance().getxSize()/2, Board.getInstance().getySize()/2)));
+        player = Player.createNewPlayer();
         pressedKeys = new ArrayList<>();
         semaphore = new Semaphore(1);
     }
@@ -46,6 +45,12 @@ public class Game {
             for (int pressedKey : pressedKeys) {
                 handleKeyPress(pressedKey);
             }
+            player.updatePosition();
+//            System.out.println(player.getShip().getPosition().getY());
+//            System.out.println(player.getShip().getPosition().getVelocity().getyVelocity());
+//            System.out.println(player.getShip().getPosition().getVelocity().getAcceleration().getyAcceleration());
+
+
             semaphore.release();
             UIHandler.update();
             try {
@@ -57,16 +62,16 @@ public class Game {
     }
 
     public void handleKeyPress (int e){
-        if (e== KeyEvent.VK_UP || e == KeyEvent.VK_W){
-            player.moveUp();
+        if (e== KeyEvent.VK_UP){
+            player.increaseAcceleration();
         }
-        if (e == KeyEvent.VK_DOWN || e == KeyEvent.VK_S){
-            player.moveDown();
+        if (e == KeyEvent.VK_DOWN){
+            player.decreaseAcceleration();
         }
-        if (e == KeyEvent.VK_LEFT || e == KeyEvent.VK_A){
+        if (e == KeyEvent.VK_LEFT){
             player.rotateLeft();
         }
-        if (e == KeyEvent.VK_RIGHT || e == KeyEvent.VK_D){
+        if (e == KeyEvent.VK_RIGHT){
             player.rotateRight();
         }
 //        if (e.getKeyCode() == KeyEvent.VK_SPACE){
@@ -80,7 +85,9 @@ public class Game {
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
         }
-        pressedKeys.add(e.getKeyCode());
+        if (!pressedKeys.contains(e.getKeyCode())){
+            pressedKeys.add(e.getKeyCode());
+        }
         semaphore.release();
     }
 
@@ -90,7 +97,7 @@ public class Game {
         } catch (InterruptedException interruptedException) {
             interruptedException.printStackTrace();
         }
-        pressedKeys.removeAll(Collections.singletonList(e.getKeyCode()));
+        pressedKeys.remove(Integer.valueOf(e.getKeyCode()));
         semaphore.release();
     }
 
@@ -105,4 +112,5 @@ public class Game {
     public Player getPlayer() {
         return player;
     }
+
 }
