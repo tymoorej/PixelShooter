@@ -39,4 +39,10 @@ public class Acceleration {
     public void setAcceleration(double yAcceleration) {
         this.acceleration = yAcceleration;
     }
+
+    public void updateAcceleration() {
+        if (acceleration > 0){
+            acceleration = 0.99 * acceleration;
+        }
+    }
 }

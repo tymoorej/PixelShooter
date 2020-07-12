@@ -38,12 +38,12 @@ public class Ship extends PhysicalEntity{
     }
 
     public BufferedImage getImage() {
-        int diffFromTen = angle.getAngle() % 10;
-        int angleToNearestTen = angle.getAngle() - diffFromTen;
-        if (diffFromTen >=5){
-            angleToNearestTen += 10;
+        int diffFromFive = angle.getAngle() % 5;
+        int angleToNearestFive = angle.getAngle() - diffFromFive;
+        if (diffFromFive >=3){
+            angleToNearestFive += 5;
         }
-        return ImageHelper.loadImage(String.valueOf(angleToNearestTen));
+        return ImageHelper.loadImage(String.valueOf(angleToNearestFive));
     }
 
     public Angle getAngle() {
@@ -72,12 +72,12 @@ public class Ship extends PhysicalEntity{
 
     @Override
     public double getPositiveAccelerationIncrement() {
-        return 0.04;
+        return 0.01;
     }
 
     @Override
     public double getNegativeAccelerationIncrement() {
-        return 0.1;
+        return 0.025;
     }
 
     @Override

@@ -50,7 +50,8 @@ public class Position {
     }
 
     private void updateXPosition(int width, double velocity){
-        x = (int) (x + velocity);
+        int roundedVelocity = (int) ((velocity > 0) ? Math.ceil(velocity) : Math.floor(velocity));
+        x = x + roundedVelocity;
         if (x > Screen.getInstance().getWidth() - width){
             x = 0;
         }
@@ -60,7 +61,8 @@ public class Position {
     }
 
     private void updateYPosition(int height, double velocity){
-        y = (int) (y - velocity);
+        int roundedVelocity = (int) ((velocity > 0) ? Math.ceil(velocity) : Math.floor(velocity));
+        y = y - roundedVelocity;
         if (y > Screen.getInstance().getHeight() - height){
             y = 0;
         }

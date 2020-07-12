@@ -21,6 +21,7 @@ public class Velocity {
     }
 
     public void updateVelocity(){
+        acceleration.updateAcceleration();
         velocity = velocity + acceleration.getAcceleration();
 
         if (velocity > maxVelocity){
@@ -48,6 +49,7 @@ public class Velocity {
             return velocity;
         }
     }
+
     public Acceleration getAcceleration() {
         return acceleration;
     }
