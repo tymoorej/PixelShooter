@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 
 public class Ship extends PhysicalEntity{
     private Position position;
-    private BufferedImage image;
     private Angle angle;
 
     public Ship() {
@@ -24,49 +23,26 @@ public class Ship extends PhysicalEntity{
                         shouldAdjustForFriction())
         );
         this.angle = new Angle(0);
-        this.image = ImageHelper.loadImage(String.valueOf(angle.getAngle()));
+    }
+
+    public void rotateLeft() {
+        angle.rotateLeft();
+    }
+
+    public void rotateRight() {
+        angle.rotateRight();
     }
 
     public Position getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void rotateLeft() {
-        angle.rotateLeft();
-        image = ImageHelper.loadImage(String.valueOf(angle.getAngle()));
-    }
-
-    public void rotateRight() {
-        angle.rotateRight();
-        image = ImageHelper.loadImage(String.valueOf(angle.getAngle()));
-    }
-
     public BufferedImage getImage() {
-        return image;
+        return ImageHelper.loadImage(String.valueOf(angle.getAngle()));
     }
 
     public Angle getAngle() {
         return angle;
-    }
-
-    public void setAngle(Angle angle) {
-        this.angle = angle;
-    }
-
-    public void increaseAcceleration() {
-        position.getVelocity().getAcceleration().increaseAcceleration();
-    }
-
-    public void decreaseAcceleration() {
-        position.getVelocity().getAcceleration().decreaseAcceleration();
-    }
-
-    public void updatePosition(){
-        position.updatePosition(getWidth(), getHeight(), angle.getAngle());
     }
 
     @Override
@@ -96,7 +72,7 @@ public class Ship extends PhysicalEntity{
 
     @Override
     public double getNegativeAccelerationIncrement() {
-        return 0.5;
+        return 0.25;
     }
 
     @Override
@@ -106,7 +82,7 @@ public class Ship extends PhysicalEntity{
 
     @Override
     public double getMinAcceleration() {
-        return 0;
+        return -5;
     }
 
     @Override

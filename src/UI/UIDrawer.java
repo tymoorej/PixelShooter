@@ -4,10 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 
-import Entities.Player;
+import BoardHelpers.Board;
+import Entities.PhysicalEntity;
 import Entities.Ship;
 import GameHelper.Game;
 import Motion.Position;
+import GameHelper.Semaphores;
 
 public class UIDrawer extends JPanel {
 
@@ -16,16 +18,21 @@ public class UIDrawer extends JPanel {
         super.paintComponent(g);
         this.setBackground(Color.BLACK);
 
-        Player player = Game.getInstance().getPlayer();
-        Ship ship = player.getShip();
-        Position position = ship.getPosition();
+        Semaphores.getInstance().aquireEntitiesSemaphore();
 
-        drawPlayer(g, ship, position);
+        for (PhysicalEntity entity: Board.getInstance().getEntities()){
+            drawEntity(g, entity);
+        }
+        Semaphores.getInstance().releaseEntitiesSemaphore();
+
+        Ship ship = Game.getInstance().getShip();
+        Position position = ship.getPosition();
         printStats(g, ship, position);
     }
 
-    private void drawPlayer(Graphics g, Ship ship, Position position) {
-        g.drawImage(ship.getImage(), position.getX(), position.getY(), ship.getWidth(), ship.getHeight(), null);
+    private void drawEntity(Graphics g, PhysicalEntity entity) {
+        Position position = entity.getPosition();
+        g.drawImage(entity.getImage(), position.getX(), position.getY(), entity.getWidth(), entity.getHeight(), null);
     }
 
     private void printStats(Graphics g, Ship ship, Position position){

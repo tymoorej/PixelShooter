@@ -1,13 +1,12 @@
 package GameHelper;
 
-import Entities.Player;
+import BoardHelpers.Board;
+import Entities.PhysicalEntity;
 import Entities.Ship;
-import Motion.Position;
-import UI.Screen;
+import Entities.SmallAsteroid;
 import UI.UIHandler;
 
 import java.awt.event.KeyEvent;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
@@ -17,10 +16,9 @@ public class Game {
     private static Game instance = null;
 
     private static GameState gameState;
-    private Player player;
     private ArrayList<Integer> pressedKeys;
-    private Semaphore semaphore;
     private long startTime;
+    private Ship ship;
 
     public static Game getInstance(){
         if (instance == null){
@@ -31,50 +29,53 @@ public class Game {
 
     private Game() {
         gameState = GameState.NOT_STARTED;
-        player = new Player();
         pressedKeys = new ArrayList<>();
-        semaphore = new Semaphore(1);
+        ship = new Ship();
+        Board.getInstance().addEntity(ship);
     }
 
     public void startGame (){
         startTime = System.nanoTime();
+        gameState = GameState.PLAYING;
+        AsteroidGenerator asteroidGenerator = new AsteroidGenerator();
+        asteroidGenerator.start();
+        try {
+            gameLoop();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void gameLoop() throws Exception{
         while (true){
-            try {
-                semaphore.acquire();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Semaphores.getInstance().aquireKeysSemaphore();
             for (int pressedKey : pressedKeys) {
                 handleKeyPress(pressedKey);
             }
-            player.updatePosition();
-//            System.out.println(player.getShip().getPosition().getY());
-//            System.out.println(player.getShip().getPosition().getVelocity().getyVelocity());
-//            System.out.println(player.getShip().getPosition().getVelocity().getAcceleration().getyAcceleration());
+            Semaphores.getInstance().releaseKeysSemaphore();
 
-
-            semaphore.release();
-            UIHandler.update();
-            try {
-                sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            Semaphores.getInstance().aquireEntitiesSemaphore();
+            for (PhysicalEntity entity: Board.getInstance().getEntities()){
+                entity.updatePosition();
             }
+            Semaphores.getInstance().releaseEntitiesSemaphore();
+            UIHandler.update();
+            sleep(50);
         }
     }
 
     public void handleKeyPress (int e){
         if (e== KeyEvent.VK_UP){
-            player.increaseAcceleration();
+            ship.increaseAcceleration();
         }
         if (e == KeyEvent.VK_DOWN){
-            player.decreaseAcceleration();
+            ship.decreaseAcceleration();
         }
         if (e == KeyEvent.VK_LEFT){
-            player.rotateLeft();
+            ship.rotateLeft();
         }
         if (e == KeyEvent.VK_RIGHT){
-            player.rotateRight();
+            ship.rotateRight();
         }
 //        if (e.getKeyCode() == KeyEvent.VK_SPACE){
 //            player.shoot();
@@ -82,25 +83,17 @@ public class Game {
     }
 
     public void addKeyPressed(KeyEvent e){
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException interruptedException) {
-            interruptedException.printStackTrace();
-        }
+        Semaphores.getInstance().aquireKeysSemaphore();
         if (!pressedKeys.contains(e.getKeyCode())){
             pressedKeys.add(e.getKeyCode());
         }
-        semaphore.release();
+        Semaphores.getInstance().releaseKeysSemaphore();
     }
 
     public void removeKeyPressed(KeyEvent e){
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException interruptedException) {
-            interruptedException.printStackTrace();
-        }
+        Semaphores.getInstance().aquireKeysSemaphore();
         pressedKeys.remove(Integer.valueOf(e.getKeyCode()));
-        semaphore.release();
+        Semaphores.getInstance().releaseKeysSemaphore();
     }
 
     public GameState getGameState() {
@@ -111,11 +104,12 @@ public class Game {
         Game.gameState = gameState;
     }
 
-    public Player getPlayer() {
-        return player;
-    }
-
     public long getStartTime() {
         return startTime;
     }
+
+    public Ship getShip() {
+        return ship;
+    }
+
 }

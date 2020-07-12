@@ -25,4 +25,15 @@ public abstract class PhysicalEntity {
 
     public abstract boolean shouldAdjustForFriction();
 
+    public void updatePosition(){
+        getPosition().updatePosition(getWidth(), getHeight(), getAngle().getAngle());
+    }
+
+    public void increaseAcceleration() {
+        getPosition().getVelocity().getAcceleration().increaseAcceleration();
+    }
+
+    public void decreaseAcceleration() {
+        getPosition().getVelocity().getAcceleration().decreaseAcceleration();
+    }
 }
