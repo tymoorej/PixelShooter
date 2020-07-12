@@ -1,63 +1,42 @@
 package Motion;
 
 public class Acceleration {
-    private double xAcceleration;
-    private double yAcceleration;
-    private static final double AccelerationIncrement = 0.1;
-    private static final double maxAcceleration = 2;
-    private static final double minAcceleration = -2;
+    private double acceleration;
+    private double PositiveAccelerationIncrement;
+    private double NegativeAccelerationIncrement;
+    private double maxAcceleration;
+    private double minAcceleration;
 
-    public Acceleration(double xAcceleration, double yAcceleration) {
-        this.xAcceleration = xAcceleration;
-        this.yAcceleration = yAcceleration;
+    public Acceleration(double acceleration, double positiveAccelerationIncrement, double negativeAccelerationIncrement, double maxAcceleration, double minAcceleration) {
+        this.acceleration = acceleration;
+        PositiveAccelerationIncrement = positiveAccelerationIncrement;
+        NegativeAccelerationIncrement = negativeAccelerationIncrement;
+        this.maxAcceleration = maxAcceleration;
+        this.minAcceleration = minAcceleration;
     }
 
-    public double getxAcceleration() {
-        return xAcceleration;
+    public double getAcceleration() {
+        return acceleration;
     }
 
-    public double getyAcceleration() {
-        return yAcceleration;
-    }
+    public void increaseAcceleration(){
+        acceleration = acceleration + PositiveAccelerationIncrement;
 
-    public void increaseXAcceleration(){
-        xAcceleration = xAcceleration + AccelerationIncrement;
-
-        if (xAcceleration > maxAcceleration){
-            xAcceleration = maxAcceleration;
-        }
-    }
-
-    public void decreaseXAcceleration(){
-        xAcceleration = xAcceleration - AccelerationIncrement;
-
-        if (xAcceleration < minAcceleration){
-            xAcceleration = minAcceleration;
-        }
-    }
-
-    public void increaseYAcceleration(){
-        yAcceleration = yAcceleration + AccelerationIncrement;
-
-        if (yAcceleration > maxAcceleration){
-            yAcceleration = maxAcceleration;
+        if (acceleration > maxAcceleration){
+            acceleration = maxAcceleration;
 
         }
     }
 
-    public void decreaseYAcceleration(){
-        yAcceleration = yAcceleration - AccelerationIncrement;
+    public void decreaseAcceleration(){
+        acceleration = acceleration - NegativeAccelerationIncrement;
 
-        if (yAcceleration < minAcceleration){
-            yAcceleration = minAcceleration;
+        if (acceleration < minAcceleration){
+            acceleration = minAcceleration;
         }
     }
 
-    public void setxAcceleration(double xAcceleration) {
-        this.xAcceleration = xAcceleration;
-    }
-
-    public void setyAcceleration(double yAcceleration) {
-        this.yAcceleration = yAcceleration;
+    public void setAcceleration(double yAcceleration) {
+        this.acceleration = yAcceleration;
     }
 }

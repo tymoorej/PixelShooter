@@ -2,6 +2,7 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 
 import Entities.Player;
 import Entities.Ship;
@@ -28,22 +29,45 @@ public class UIDrawer extends JPanel {
     }
 
     private void printStats(Graphics g, Ship ship, Position position){
-        g.setColor(Color.GREEN);
+        long currentTime = System.nanoTime();
+
         g.setFont(new Font("Speed", Font.BOLD, 15));
+        g.setColor(Color.RED);
+
+        long timeDiffSeconds = (currentTime - Game.getInstance().getStartTime()) / 1000000000;
+        long timeDiffMinutes = timeDiffSeconds/60;
+        long timeDiffSecondsRemainder = timeDiffSeconds % 60;
+
+        String minutesDescriptor = "Minutes";
+        if (timeDiffMinutes == 1){
+            minutesDescriptor = "Minute";
+        }
+
+        String secondsDescriptor = "Seconds";
+        if (timeDiffSecondsRemainder == 1){
+            secondsDescriptor = "Second";
+        }
+
+        g.drawString(
+                "Time alive: " + String.valueOf(timeDiffMinutes) + " " + minutesDescriptor + " and " +
+                        String.valueOf(timeDiffSecondsRemainder) + " " + secondsDescriptor + ".",
+                50, 20);
+
+        DecimalFormat df = new DecimalFormat("#");
+
+        g.setColor(Color.GREEN);
         g.drawString(
                 "Angle: " + String.valueOf(ship.getAngle().getAngle()),
-                50, 30);
+                50, 40);
         g.drawString(
                 "Position: (" +  String.valueOf(position.getX()) + ", " + String.valueOf(position.getY()) + ")",
-                50, 50);
+                50, 60);
         g.drawString(
-                "Velocity: (" +  String.valueOf(position.getVelocity().getxVelocity()) + ", " +
-                        String.valueOf(position.getVelocity().getyVelocity()) + ")",
-                50, 70);
+                "Velocity: " +  String.valueOf(df.format(position.getVelocity().getVelocity() * 1000) + " KM/H"),
+                50, 80);
         g.drawString(
-                "Acceleration: (" +  String.valueOf(position.getVelocity().getAcceleration().getxAcceleration()) +
-                        ", " + String.valueOf(position.getVelocity().getAcceleration().getyAcceleration()) + ")",
-                50, 90);
+                "Acceleration: " +  String.valueOf(df.format(position.getVelocity().getAcceleration().getAcceleration() * 1000) + " KM/H^2"),
+                50, 100);
     }
 
 }

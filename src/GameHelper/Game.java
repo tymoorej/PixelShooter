@@ -7,6 +7,7 @@ import UI.Screen;
 import UI.UIHandler;
 
 import java.awt.event.KeyEvent;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
@@ -19,6 +20,7 @@ public class Game {
     private Player player;
     private ArrayList<Integer> pressedKeys;
     private Semaphore semaphore;
+    private long startTime;
 
     public static Game getInstance(){
         if (instance == null){
@@ -29,13 +31,13 @@ public class Game {
 
     private Game() {
         gameState = GameState.NOT_STARTED;
-        player = Player.createNewPlayer();
+        player = new Player();
         pressedKeys = new ArrayList<>();
         semaphore = new Semaphore(1);
     }
 
     public void startGame (){
-
+        startTime = System.nanoTime();
         while (true){
             try {
                 semaphore.acquire();
@@ -113,4 +115,7 @@ public class Game {
         return player;
     }
 
+    public long getStartTime() {
+        return startTime;
+    }
 }

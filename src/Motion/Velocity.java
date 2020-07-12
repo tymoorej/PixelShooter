@@ -1,60 +1,40 @@
 package Motion;
 
 public class Velocity {
-    private double xVelocity;
-    private double yVelocity;
+    private double velocity;
+    private double maxVelocity;
+    private double minVelocity;
+    private boolean adjustForFriction;
 
     private Acceleration acceleration;
 
-    private static final double maxVelocity = 50;
-    private static final double minVelocity = -5;
-
-    public Velocity(double xVelocity, double yVelocity, Acceleration acceleration) {
-        this.xVelocity = xVelocity;
-        this.yVelocity = yVelocity;
+    public Velocity(double velocity, double maxVelocity, double minVelocity, Acceleration acceleration, boolean adjustForFriction) {
+        this.velocity = velocity;
+        this.maxVelocity = maxVelocity;
+        this.minVelocity = minVelocity;
         this.acceleration = acceleration;
+        this.adjustForFriction = adjustForFriction;
     }
 
-    public double getxVelocity() {
-        return xVelocity;
-    }
-
-    public double getyVelocity() {
-        return yVelocity;
+    public double getVelocity() {
+        return velocity;
     }
 
     public void updateVelocity(){
-        updateXVelocity();
-        updateYVelocity();
-    }
+        velocity = velocity + acceleration.getAcceleration();
 
-    private void updateXVelocity(){
-        xVelocity = xVelocity + acceleration.getxAcceleration();
-        if (xVelocity > maxVelocity){
-            xVelocity = maxVelocity;
-            acceleration.setxAcceleration(0);
+        if (velocity > maxVelocity){
+            velocity = maxVelocity;
+            acceleration.setAcceleration(0);
         }
-        else if (xVelocity < minVelocity){
-            xVelocity = minVelocity;
-            acceleration.setxAcceleration(0);
+        else if (velocity < minVelocity){
+            velocity = minVelocity;
+            acceleration.setAcceleration(0);
         }
 
-        yVelocity = adjustForFriction(yVelocity);
-    }
-
-    private void updateYVelocity(){
-        yVelocity = yVelocity + acceleration.getyAcceleration();
-
-        if (yVelocity > maxVelocity){
-            yVelocity = maxVelocity;
-            acceleration.setyAcceleration(0);
+        if (adjustForFriction){
+            velocity = adjustForFriction(velocity);
         }
-        else if (yVelocity < minVelocity){
-            yVelocity = minVelocity;
-            acceleration.setyAcceleration(0);
-        }
-
-        yVelocity = adjustForFriction(yVelocity);
     }
 
     public double adjustForFriction(double velocity){
@@ -75,4 +55,7 @@ public class Velocity {
     public void setAcceleration(Acceleration acceleration) {
         this.acceleration = acceleration;
     }
+
+
+
 }

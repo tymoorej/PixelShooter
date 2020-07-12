@@ -37,14 +37,18 @@ public class Position {
         this.velocity = velocity;
     }
 
-    public void updatePosition(int width, int height){
+    public void updatePosition(int width, int height, int angle){
         velocity.updateVelocity();
-        updateXPosition(width);
-        updateYPosition(height);
+
+        double xVelocity = velocity.getVelocity() * Math.sin(Math.toRadians(angle));
+        double yVelocity = velocity.getVelocity() * Math.cos(Math.toRadians(angle));
+
+        updateXPosition(width, xVelocity);
+        updateYPosition(height, yVelocity);
     }
 
-    private void updateXPosition(int width){
-        x = (int) (x + velocity.getxVelocity());
+    private void updateXPosition(int width, double velocity){
+        x = (int) (x + velocity);
         if (x > Screen.getInstance().getWidth() - width){
             x = 0;
         }
@@ -53,8 +57,8 @@ public class Position {
         }
     }
 
-    private void updateYPosition(int height){
-        y = (int) (y - velocity.getyVelocity());
+    private void updateYPosition(int height, double velocity){
+        y = (int) (y - velocity);
         if (y > Screen.getInstance().getHeight() - height){
             y = 0;
         }

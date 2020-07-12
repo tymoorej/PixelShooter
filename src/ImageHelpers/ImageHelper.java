@@ -7,10 +7,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class ImageHelper {
-    public static BufferedImage loadImage(int angle){
+    public static BufferedImage loadImage(String fname){
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File("Images/" + String.valueOf(angle) + ".png"));
+            image = ImageIO.read(new File("Images/" + fname + ".png"));
         } catch (Exception ex) {
             System.out.println("error reading file");
         }
