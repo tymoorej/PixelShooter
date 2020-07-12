@@ -59,6 +59,14 @@ public class Game {
                 entity.updatePosition();
             }
             Semaphores.getInstance().releaseEntitiesSemaphore();
+
+            Semaphores.getInstance().aquireDeleteQueueSemaphore();
+            for (PhysicalEntity entity: Board.getInstance().getDeleteQueue()){
+                Board.getInstance().RemoveEntity(entity);
+            }
+            Board.getInstance().clearDeleteQueue();
+            Semaphores.getInstance().releaseDeleteQueueSemaphore();
+
             UIHandler.update();
             sleep(20);
         }
@@ -77,9 +85,6 @@ public class Game {
         if (e == KeyEvent.VK_RIGHT){
             ship.rotateRight();
         }
-//        if (e.getKeyCode() == KeyEvent.VK_SPACE){
-//            player.shoot();
-//        }
     }
 
     public void addKeyPressed(KeyEvent e){
@@ -91,6 +96,10 @@ public class Game {
     }
 
     public void removeKeyPressed(KeyEvent e){
+        if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            ship.shoot();
+        }
+
         Semaphores.getInstance().aquireKeysSemaphore();
         pressedKeys.remove(Integer.valueOf(e.getKeyCode()));
         Semaphores.getInstance().releaseKeysSemaphore();

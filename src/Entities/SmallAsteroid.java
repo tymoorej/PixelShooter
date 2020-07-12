@@ -11,7 +11,7 @@ public class SmallAsteroid extends Asteroid {
     public SmallAsteroid(int x, int y, int angle) {
         this.position = new Position(x, y,
                 new Velocity(getVelocity(), getMaxVelocity(), getMinVelocity(),
-                        getAcceleration(), shouldAdjustForFriction()));
+                        getAcceleration(), shouldAdjustForFriction()), shouldDeleteWhenOffScreen(), this);
         this.angle = new Angle(angle, getMaxAngleRotation());
     }
 

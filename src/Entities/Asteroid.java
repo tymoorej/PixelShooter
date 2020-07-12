@@ -56,4 +56,9 @@ public abstract class Asteroid extends PhysicalEntity{
     public int getMaxAngleRotation() {
         return 0;
     }
+
+    @Override
+    public boolean shouldDeleteWhenOffScreen() {
+        return false;
+    }
 }

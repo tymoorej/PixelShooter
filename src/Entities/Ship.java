@@ -1,5 +1,6 @@
 package Entities;
 
+import BoardHelpers.Board;
 import ImageHelpers.ImageHelper;
 import Motion.Acceleration;
 import Motion.Angle;
@@ -20,7 +21,7 @@ public class Ship extends PhysicalEntity{
                 new Velocity(0, getMaxVelocity(), getMinVelocity(),
                         new Acceleration(0, getPositiveAccelerationIncrement(),
                                 getNegativeAccelerationIncrement(), getMaxAcceleration(), getMinAcceleration()),
-                        shouldAdjustForFriction())
+                        shouldAdjustForFriction()), shouldDeleteWhenOffScreen(), this
         );
         this.angle = new Angle(0, getMaxAngleRotation());
     }
@@ -71,6 +72,11 @@ public class Ship extends PhysicalEntity{
     }
 
     @Override
+    public double getVelocity() {
+        return position.getVelocity().getVelocity();
+    }
+
+    @Override
     public double getPositiveAccelerationIncrement() {
         return 0.01;
     }
@@ -91,12 +97,27 @@ public class Ship extends PhysicalEntity{
     }
 
     @Override
+    public Acceleration getAcceleration() {
+        return position.getVelocity().getAcceleration();
+    }
+
+    @Override
     public boolean shouldAdjustForFriction() {
         return true;
     }
 
     @Override
+    public boolean shouldDeleteWhenOffScreen() {
+        return false;
+    }
+
+    @Override
     public int getMaxAngleRotation() {
         return 5;
+    }
+
+    public void shoot() {
+        Laser laser = new Laser(position.getX() + getWidth() / 2, position.getY() + getHeight() / 2, angle.getAngle());
+        Board.getInstance().addEntity(laser);
     }
 }

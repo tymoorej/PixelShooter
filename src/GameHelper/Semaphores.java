@@ -5,11 +5,13 @@ import java.util.concurrent.Semaphore;
 public class Semaphores {
     private Semaphore keysSemaphore;
     private Semaphore entitiesSemaphore;
+    private Semaphore deleteQueueSemaphore;
     private static Semaphores instance = null;
 
     private Semaphores() {
         keysSemaphore = new Semaphore(1);
         entitiesSemaphore = new Semaphore(1);
+        deleteQueueSemaphore = new Semaphore(1);
     }
 
     public static Semaphores getInstance(){
@@ -33,6 +35,14 @@ public class Semaphores {
 
     public void releaseEntitiesSemaphore(){
         releaseSemaphore(entitiesSemaphore);
+    }
+
+    public void aquireDeleteQueueSemaphore(){
+        acquireSemaphore(deleteQueueSemaphore);
+    }
+
+    public void releaseDeleteQueueSemaphore(){
+        releaseSemaphore(deleteQueueSemaphore);
     }
 
     private void acquireSemaphore(Semaphore semaphore){
