@@ -4,9 +4,11 @@ import ImageHelpers.ImageHelper;
 
 public class Angle {
     private int angle;
+    private int maxAngleRotation;
 
-    public Angle(int angle) {
+    public Angle(int angle, int maxAngleRotation) {
         this.angle = angle;
+        this.maxAngleRotation = maxAngleRotation;
     }
 
     public int getAngle() {
@@ -18,16 +20,16 @@ public class Angle {
     }
 
     public void rotateLeft() {
-        angle = angle - 10;
+        angle = angle - maxAngleRotation;
         if (angle < 0){
-            angle = 350;
+            angle = 360 - maxAngleRotation;
         }
     }
 
     public void rotateRight() {
-        angle = angle + 10;
+        angle = angle + maxAngleRotation;
         if (angle > 360){
-            angle = 10;
+            angle = maxAngleRotation;
         }
     }
 }

@@ -38,7 +38,7 @@ public class UIDrawer extends JPanel {
     private void printStats(Graphics g, Ship ship, Position position){
         long currentTime = System.nanoTime();
 
-        g.setFont(new Font("Speed", Font.BOLD, 15));
+        g.setFont(new Font("Text", Font.BOLD, 15));
         g.setColor(Color.RED);
 
         long timeDiffSeconds = (currentTime - Game.getInstance().getStartTime()) / 1000000000;
@@ -70,7 +70,7 @@ public class UIDrawer extends JPanel {
                 "Position: (" +  String.valueOf(position.getX()) + ", " + String.valueOf(position.getY()) + ")",
                 50, 60);
         g.drawString(
-                "Velocity: " +  String.valueOf(df.format(position.getVelocity().getVelocity() * 1000) + " KM/H"),
+                "Speed: " +  String.valueOf(df.format(position.getVelocity().getVelocity() * 1000) + " KM/H"),
                 50, 80);
         g.drawString(
                 "Acceleration: " +  String.valueOf(df.format(position.getVelocity().getAcceleration().getAcceleration() * 1000) + " KM/H^2"),

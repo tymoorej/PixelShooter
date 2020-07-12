@@ -23,6 +23,8 @@ public abstract class PhysicalEntity {
     public abstract double getMaxAcceleration();
     public abstract double getMinAcceleration();
 
+    public abstract int getMaxAngleRotation();
+
     public abstract boolean shouldAdjustForFriction();
 
     public void updatePosition(){
@@ -36,4 +38,7 @@ public abstract class PhysicalEntity {
     public void decreaseAcceleration() {
         getPosition().getVelocity().getAcceleration().decreaseAcceleration();
     }
+
+
+
 }

@@ -13,7 +13,7 @@ public class BigAsteroid extends Asteroid {
         this.position = new Position(x, y,
                 new Velocity(getVelocity(), getMaxVelocity(), getMinVelocity(),
                         getAcceleration(), shouldAdjustForFriction()));
-        this.angle = new Angle(angle);
+        this.angle = new Angle(angle, getMaxAngleRotation());
     }
 
     @Override

@@ -52,4 +52,8 @@ public abstract class Asteroid extends PhysicalEntity{
         return getMaxVelocity();
     }
 
+    @Override
+    public int getMaxAngleRotation() {
+        return 0;
+    }
 }

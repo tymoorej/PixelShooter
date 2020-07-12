@@ -60,7 +60,7 @@ public class Game {
             }
             Semaphores.getInstance().releaseEntitiesSemaphore();
             UIHandler.update();
-            sleep(50);
+            sleep(20);
         }
     }
 

@@ -22,7 +22,7 @@ public class Ship extends PhysicalEntity{
                                 getNegativeAccelerationIncrement(), getMaxAcceleration(), getMinAcceleration()),
                         shouldAdjustForFriction())
         );
-        this.angle = new Angle(0);
+        this.angle = new Angle(0, getMaxAngleRotation());
     }
 
     public void rotateLeft() {
@@ -38,7 +38,12 @@ public class Ship extends PhysicalEntity{
     }
 
     public BufferedImage getImage() {
-        return ImageHelper.loadImage(String.valueOf(angle.getAngle()));
+        int diffFromTen = angle.getAngle() % 10;
+        int angleToNearestTen = angle.getAngle() - diffFromTen;
+        if (diffFromTen >=5){
+            angleToNearestTen += 10;
+        }
+        return ImageHelper.loadImage(String.valueOf(angleToNearestTen));
     }
 
     public Angle getAngle() {
@@ -57,7 +62,7 @@ public class Ship extends PhysicalEntity{
 
     @Override
     public double getMaxVelocity() {
-        return 50;
+        return 20;
     }
 
     @Override
@@ -67,22 +72,22 @@ public class Ship extends PhysicalEntity{
 
     @Override
     public double getPositiveAccelerationIncrement() {
-        return 0.1;
+        return 0.04;
     }
 
     @Override
     public double getNegativeAccelerationIncrement() {
-        return 0.25;
+        return 0.1;
     }
 
     @Override
     public double getMaxAcceleration() {
-        return 2;
+        return 0.8;
     }
 
     @Override
     public double getMinAcceleration() {
-        return -5;
+        return -2;
     }
 
     @Override
@@ -90,4 +95,8 @@ public class Ship extends PhysicalEntity{
         return true;
     }
 
+    @Override
+    public int getMaxAngleRotation() {
+        return 5;
+    }
 }

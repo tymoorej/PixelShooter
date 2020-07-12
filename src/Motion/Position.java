@@ -2,6 +2,8 @@ package Motion;
 
 import UI.Screen;
 
+import java.util.concurrent.Semaphore;
+
 public class Position {
     private int x;
     private int y;
