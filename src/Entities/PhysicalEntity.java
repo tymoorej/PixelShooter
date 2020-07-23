@@ -1,5 +1,6 @@
 package Entities;
 
+import BoardHelpers.Board;
 import Motion.Acceleration;
 import Motion.Angle;
 import Motion.Position;
@@ -11,6 +12,14 @@ public abstract class PhysicalEntity {
     public abstract BufferedImage getImage();
 
     public abstract Angle getAngle();
+
+
+    public int getCollisionWidth(){
+        return getWidth();
+    }
+    public int getCollisionHeight(){
+        return getHeight();
+    }
 
     public abstract int getWidth();
     public abstract int getHeight();
@@ -44,6 +53,23 @@ public abstract class PhysicalEntity {
         getPosition().getVelocity().getAcceleration().decreaseAcceleration();
     }
 
+    public void handleCollision(PhysicalEntity entity){
+        if (entity instanceof Ship){
+            handleCollision((Ship) entity);
+        }
+        if (entity instanceof Laser){
+            handleCollision((Laser) entity);
+        }
+        if (entity instanceof Asteroid){
+            handleCollision((Asteroid) entity);
+        }
+    }
 
+    public abstract void handleCollision(Ship ship);
+    public abstract void handleCollision(Laser laser);
+    public abstract void handleCollision(Asteroid asteroid);
 
+    public void delete(){
+        Board.getInstance().RemoveEntity(this);
+    }
 }

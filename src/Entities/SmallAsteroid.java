@@ -1,5 +1,6 @@
 package Entities;
 
+import BoardHelpers.Board;
 import Motion.Angle;
 import Motion.Position;
 import Motion.Velocity;
@@ -8,7 +9,8 @@ public class SmallAsteroid extends Asteroid {
     private Position position;
     private Angle angle;
 
-    public SmallAsteroid(int x, int y, int angle) {
+    public SmallAsteroid(double x, double y, int angle) {
+        super();
         this.position = new Position(x, y,
                 new Velocity(getVelocity(), getMaxVelocity(), getMinVelocity(),
                         getAcceleration(), shouldAdjustForFriction()), shouldDeleteWhenOffScreen(), this);
@@ -40,4 +42,10 @@ public class SmallAsteroid extends Asteroid {
         return 10;
     }
 
+    @Override
+    public void handleCollision(Laser laser) {
+        if (!Board.getInstance().containsInDeleteQueue(this)) {
+            Board.getInstance().addToDeleteQueue(this);
+        }
+    }
 }

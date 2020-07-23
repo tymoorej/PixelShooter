@@ -1,6 +1,8 @@
 package Entities;
 
 import BoardHelpers.Board;
+import GameHelper.Game;
+import GameHelper.GameState;
 import ImageHelpers.ImageHelper;
 import Motion.Acceleration;
 import Motion.Angle;
@@ -68,7 +70,7 @@ public class Ship extends PhysicalEntity{
 
     @Override
     public double getMinVelocity() {
-        return -2;
+        return -1;
     }
 
     @Override
@@ -83,7 +85,7 @@ public class Ship extends PhysicalEntity{
 
     @Override
     public double getNegativeAccelerationIncrement() {
-        return 0.025;
+        return 0.01;
     }
 
     @Override
@@ -117,7 +119,30 @@ public class Ship extends PhysicalEntity{
     }
 
     public void shoot() {
-        Laser laser = new Laser(position.getX() + getWidth() / 2, position.getY() + getHeight() / 2, angle.getAngle());
-        Board.getInstance().addEntity(laser);
+        if (Laser.getTotalLasers() < Laser.MAX_LASERS){
+            Laser laser = new Laser(position.getX() + getWidth() / 2, position.getY() + getHeight() / 2, angle.getAngle());
+            Board.getInstance().addEntity(laser);
+        }
+    }
+
+    @Override
+    public void handleCollision(Ship ship) {}
+
+    @Override
+    public void handleCollision(Laser laser) {}
+
+    @Override
+    public void handleCollision(Asteroid asteroid) {
+        Game.getInstance().setGameState(GameState.GAME_OVER);
+    }
+
+    @Override
+    public int getCollisionWidth() {
+        return getWidth()/2;
+    }
+
+    @Override
+    public int getCollisionHeight() {
+        return getHeight()/2;
     }
 }

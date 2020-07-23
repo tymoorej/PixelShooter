@@ -1,21 +1,22 @@
 import GameHelper.Game;
 import UI.*;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
+
 import static java.lang.Thread.sleep;
 
 public class Main {
 
     private static Game game;
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws InterruptedException, UnsupportedAudioFileException, IOException, LineUnavailableException {
         System.out.println("Starting");
-        Game.getInstance();
+        MusicHandler.play();
         UIHandler.setup();
-        run();
-        System.exit(0);
-    }
+        Game.getInstance().setupGame();
 
-    private static void run() {
-        Game.getInstance().startGame();
+        System.exit(0);
     }
 }

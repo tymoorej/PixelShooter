@@ -9,11 +9,13 @@ import Motion.Velocity;
 import java.awt.image.BufferedImage;
 
 public class Laser extends PhysicalEntity{
-
     private Position position;
     private Angle angle;
+    private static int totalLasers;
+    public static final int MAX_LASERS = 3;
 
-    public Laser(int x, int y, int angle) {
+    public Laser(double x, double y, int angle) {
+        totalLasers ++;
         this.position = new Position(x, y,
                 new Velocity(getVelocity(), getMaxVelocity(), getMinVelocity(),
                         getAcceleration(), shouldAdjustForFriction()), shouldDeleteWhenOffScreen(), this);
@@ -99,5 +101,34 @@ public class Laser extends PhysicalEntity{
         return new Acceleration(0, getPositiveAccelerationIncrement(),
                 getNegativeAccelerationIncrement(), getMaxAcceleration(),
                 getMinAcceleration());
+    }
+
+    @Override
+    public void handleCollision(Ship ship) {}
+
+    @Override
+    public void handleCollision(Laser laser) {}
+
+    @Override
+    public void handleCollision(Asteroid asteroid) {}
+
+    @Override
+    public void delete() {
+        super.delete();
+        totalLasers --;
+    }
+
+    public static int getTotalLasers() {
+        return totalLasers;
+    }
+
+    @Override
+    public int getCollisionWidth() {
+        return getWidth() * 2;
+    }
+
+    @Override
+    public int getCollisionHeight() {
+        return getHeight() * 2;
     }
 }

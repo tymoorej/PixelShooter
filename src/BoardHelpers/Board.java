@@ -9,6 +9,7 @@ public class Board {
 
     private static Board instance = null;
     private ArrayList<PhysicalEntity> entities;
+    private ArrayList<PhysicalEntity> entitiesQueue;
     private ArrayList<PhysicalEntity> deleteQueue;
 
 
@@ -21,6 +22,7 @@ public class Board {
 
     private Board() {
         entities = new ArrayList<>();
+        entitiesQueue = new ArrayList<>();
         deleteQueue = new ArrayList<>();
     }
 
@@ -33,6 +35,17 @@ public class Board {
         entities.add(entity);
         Semaphores.getInstance().releaseEntitiesSemaphore();
     }
+
+    public ArrayList<PhysicalEntity> getEntitiesQueue() {
+        return entitiesQueue;
+    }
+
+    public void addEntityToQueue(PhysicalEntity entity){
+        Semaphores.getInstance().aquireEntitiesQueueSemaphore();
+        entitiesQueue.add(entity);
+        Semaphores.getInstance().releaseEntitiesQueueSemaphore();
+    }
+
 
     public void RemoveEntity(PhysicalEntity entity){
         Semaphores.getInstance().aquireEntitiesSemaphore();
@@ -53,4 +66,13 @@ public class Board {
     public ArrayList<PhysicalEntity> getDeleteQueue() {
         return deleteQueue;
     }
+
+    public void clearEntitiesQueue() {
+        entitiesQueue.clear();
+    }
+
+    public boolean containsInDeleteQueue(PhysicalEntity entity){
+        return deleteQueue.contains(entity);
+    }
+
 }

@@ -7,6 +7,13 @@ import Motion.Velocity;
 import java.awt.image.BufferedImage;
 
 public abstract class Asteroid extends PhysicalEntity{
+
+    private static int totalAsteroids = 0;
+
+    public Asteroid() {
+        totalAsteroids++;
+    }
+
     @Override
     public boolean shouldAdjustForFriction() {
         return false;
@@ -60,5 +67,21 @@ public abstract class Asteroid extends PhysicalEntity{
     @Override
     public boolean shouldDeleteWhenOffScreen() {
         return false;
+    }
+
+    @Override
+    public void handleCollision(Ship ship) {}
+
+    @Override
+    public void handleCollision(Asteroid asteroid) {}
+
+    public static int getTotalAsteroids() {
+        return totalAsteroids;
+    }
+
+    @Override
+    public void delete() {
+        super.delete();
+        totalAsteroids--;
     }
 }

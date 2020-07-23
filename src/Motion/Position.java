@@ -7,13 +7,13 @@ import UI.Screen;
 import java.util.concurrent.Semaphore;
 
 public class Position {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     private Velocity velocity;
     private boolean deleteWhenOffScreen;
     private PhysicalEntity parent;
 
-    public Position(int x, int y, Velocity velocity, boolean deleteWhenOffScreen, PhysicalEntity parent) {
+    public Position(double x, double y, Velocity velocity, boolean deleteWhenOffScreen, PhysicalEntity parent) {
         this.x = x;
         this.y = y;
         this.velocity = velocity;
@@ -21,19 +21,19 @@ public class Position {
         this.parent = parent;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
@@ -56,8 +56,7 @@ public class Position {
     }
 
     private void updateXPosition(int width, double velocity){
-        int roundedVelocity = (int) ((velocity > 0) ? Math.ceil(velocity) : Math.floor(velocity));
-        x = x + roundedVelocity;
+        x = x + velocity;
         if (x > Screen.getInstance().getWidth() - width){
             if (deleteWhenOffScreen){
                 Board.getInstance().addToDeleteQueue(parent);
@@ -75,8 +74,7 @@ public class Position {
     }
 
     private void updateYPosition(int height, double velocity){
-        int roundedVelocity = (int) ((velocity > 0) ? Math.ceil(velocity) : Math.floor(velocity));
-        y = y - roundedVelocity;
+        y = y - velocity;
         if (y > Screen.getInstance().getHeight() - height){
             if (deleteWhenOffScreen){
                 Board.getInstance().addToDeleteQueue(parent);
